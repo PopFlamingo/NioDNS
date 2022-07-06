@@ -128,6 +128,11 @@ extension DNSClient {
             }
         
         return bootstrap.connect(to: address).map { channel in
+            Task {
+                print("Will wait close")
+                try await channel.closeFuture.get()
+                print("Closed!")
+            }
             let client = DNSClient(
                 channel: channel,
                 address: address,
